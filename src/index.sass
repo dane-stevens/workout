@@ -1,0 +1,101 @@
+@import 'theme'
+  
+html
+  font-size: 62.5%
+  font-family: Helvetica, Arial, sans-serif,
+
+root,
+html,
+body
+  height: 100%
+  overflow: hidden
+  margin: 0
+
+body
+  background-color: $bg-color
+  color: $text
+
+#root
+  height: 100%
+
+.container
+  position: relative
+  height: 100%
+  max-width: 100%
+
+.workoutWrapper
+  position: absolute
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+  text-align: center
+  max-width: 100%
+
+h1
+  font-size: 5rem
+  color: $dark-text
+
+ul
+  list-style: none
+  margin: 0
+  padding: 0
+  font-size: 1.8rem
+
+  li
+    white-space: nowrap
+    text-align: left
+    margin: .5rem 0
+
+.start
+  margin: 6rem 1rem 0 1rem
+  background: none
+  border: 1px solid $dark-text
+  border-radius: 5px
+  color: $dark-text
+  padding: 1rem 2rem
+  cursor: pointer
+  outline: none
+  appearance: none
+
+.start:hover
+  background: rgba(255,255,255,0.1)
+
+.progress
+  font-size: 6rem
+  color: $dark-text
+
+.exercise
+  font-size: 7rem
+  height: 20rem
+  position: relative
+  margin: 2rem 0
+
+.exerciseText
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  max-height: 20rem
+
+.reps
+  font-size: 20rem
+
+.nextButton
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  width: 100%
+  height: 100%
+  background: none
+  border: none
+  appearance: none
+  outline: none
+
+.timer
+  font-size: 4rem
+  color: $dark-text
+
+@media screen and (min-width: 48em)
+  html
+    font-size: 100%
