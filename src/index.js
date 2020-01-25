@@ -96,11 +96,11 @@ function Workout({ name }) {
                 payload: {
                     name: name,
                     time: timer,
-                    arms: exercises[0],
-                    conditioning: exercises[1],
-                    legs: exercises[2],
-                    abs: exercises[3],
-                    strength: exercises[4]
+                    arms: exercises['D'],
+                    conditioning: exercises['H'],
+                    legs: exercises['C'],
+                    abs: exercises['S'],
+                    strength: exercises['Joker']
                 }
             }
         })
