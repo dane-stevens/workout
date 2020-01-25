@@ -1,3 +1,4 @@
 [build]
   publish = "build"
   functions = "src/lambda"
+  command = "netlify-lambda install && yarn build"
