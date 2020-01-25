@@ -141,6 +141,8 @@ const resolvers = {
 
       console.log('DONE')
 
+      return 'SUCCESS'
+
     }
 
   },
