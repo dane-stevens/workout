@@ -17,6 +17,7 @@
     "googleapis": "^47.0.0",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "netlify-lambda": "^1.6.3",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
