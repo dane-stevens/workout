@@ -4,6 +4,8 @@ const { google } = require('googleapis')
 
 const { CLIENT_EMAIL, PRIVATE_KEY } = process.env
 
+console.log('CLIENT------------------------------------', CLIENT_EMAIL, PRIVATE_KEY)
+
 const jwtClient = new google.auth.JWT(
   CLIENT_EMAIL,
   null,
