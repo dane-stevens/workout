@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const { ApolloServer, gql } = require('apollo-server-lambda')
 const { google } = require('googleapis')
 
@@ -96,7 +96,7 @@ const resolvers = {
 
   Mutation: {
 
-    logTime:(root, { payload }) => {
+    logTime: async (root, { payload }) => {
 
       const jwtClient = new google.auth.JWT(
         CLIENT_EMAIL,
@@ -104,8 +104,8 @@ const resolvers = {
         privateKey,
         [
           'https://www.googleapis.com/auth/spreadsheets',
-          'https://www.googleapis.com/auth/drive',
-          'https://www.googleapis.com/auth/calendar'
+          // 'https://www.googleapis.com/auth/drive',
+          // 'https://www.googleapis.com/auth/calendar'
         ]
       )
 
@@ -120,7 +120,7 @@ const resolvers = {
 
       const sheets = google.sheets('v4')
 
-      sheets.spreadsheets.values.append(
+      await sheets.spreadsheets.values.append(
         {
           auth: jwtClient,
           spreadsheetId: '1-VUdDS3AmTfbuZIqLepi_aMbVzHWiL_PsqYEwJyf7so',
