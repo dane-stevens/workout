@@ -1,0 +1,1 @@
+H,7,S,Q,D,8,D,J,D,A,S,10,S,8,S,9,H,6,H,4,D,3,S,K,C,8,C,4,H,J,D,7,C,A,H,10,S,3,H,3,C,J,S,A,D,9,S,5,H,K,Joker,Joker,C,9,Joker,Joker,S,J,D,6,H,5,S,7,H,8,D,4,S,4,C,3,C,2,C,K,D,5,C,Q,C,6,D,2,H,2,H,9,S,2,H,Q,C,10,C,7,D,10,S,6,C,5,D,K,D,Q,H,A

@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { useInterval } from './hooks/interval'
 import { AutoFontSize } from 'auto-fontsize'
+import { ApolloProvider, useMutation } from '@apollo/react-hooks'
+import client from './Apollo'
 
 import './index.sass'
 
-import { cards, exerciseList, reps } from './exerciseConfig'
+import { reps } from './exerciseConfig'
+import { LOG_TIME } from './operations/time'
 // import { cards, exerciseList, reps } from './katieExerciseConfig'
 // import { cards, exerciseList, reps } from './pushupConfig'
 
-const random = cards.sort(() => .5 - Math.random())
+import config from './config.json'
+
+const { cards, exercises } = config
 
 // Count total reps per exercise
 const counts = {}
@@ -17,19 +22,51 @@ cards.map(([k, card]) => {
     return counts[k] = counts[k] ? counts[k] + reps[card] : reps[card]
 })
 
-const exercises = {
-    'D': exerciseList['D'][Math.floor(Math.random() * exerciseList['D'].length)],
-    'H': exerciseList['H'][Math.floor(Math.random() * exerciseList['H'].length)],
-    'C': exerciseList['C'][Math.floor(Math.random() * exerciseList['C'].length)],
-    'S': exerciseList['S'][Math.floor(Math.random() * exerciseList['S'].length)],
-    'Joker': exerciseList['Joker'][Math.floor(Math.random() * exerciseList['Joker'].length)],
+function App() {
+
+    const [ loading, setLoading ] = useState(true)
+    const [ input, setInput ] = useState('')
+    const [ name, setName ] = useState('')
+
+    useEffect(() => {
+
+        const name = localStorage.getItem('name') || null
+        setName(name)
+        setLoading(false)
+
+    },[])
+
+    function submit() {
+        setName(input)
+        localStorage.setItem('name', input)
+    }
+
+    if (loading) return null
+
+    if (!name) return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                submit()
+            }}
+        >
+            <label htmlFor='f_name'>Your Name</label>
+            <input type='text' name='name' id='f_name' value={ input } onChange={ (e) => setInput(e.target.value) } />
+            <button type='submit'>Continue</button>
+        </form>
+    )
+
+    return <Workout name={ name } />
+
 }
 
-function App() {
+function Workout({ name }) {
 
     const [ state, setState ] = useState('BEGIN')
     const [ current, setCurrent ] = useState(0)
     const [ timer, setTimer ] = useState(0)
+
+    const [ logTime ] = useMutation(LOG_TIME)
 
     useInterval(() => {
         if (state === 'WORKOUT') {
@@ -44,7 +81,7 @@ function App() {
 
     function handleKeyPress(e) {
         if (e.code === 'Space') {
-            if (current < (random.length - 1)) {
+            if (current < (cards.length - 1)) {
                 setCurrent(current + 1)
             } else {
                 setState('COMPLETE')
@@ -52,7 +89,19 @@ function App() {
         }
     }
 
-    const currentElement = random[current]
+    function completeTimer() {
+        setState('COMPLETE')
+        logTime({
+            variables: {
+                payload: {
+                    name: name,
+                    time: timer
+                }
+            }
+        })
+    }
+
+    const currentElement = cards[current]
 
 
     if (state === 'COMPLETE') return (
@@ -90,7 +139,7 @@ function App() {
     return (
         <div className='container' key={current}>
             <div className='workoutWrapper'>
-                <div className='progress'>{ current + 1 }/{ random.length }</div>
+                <div className='progress'>{ current + 1 }/{ cards.length }</div>
                 <div className='exercise'>
                     <AutoFontSize
                         className='exerciseText'
@@ -105,7 +154,7 @@ function App() {
 
                 <Timer count={ timer } />
             </div>
-            <button className='nextButton' type='button' onClick={() => current < (random.length - 1) ? setCurrent(current + 1) : setState('COMPLETE')}/>
+            <button className='nextButton' type='button' onClick={() => current < (cards.length - 1) ? setCurrent(current + 1) : completeTimer() }/>
         </div>
     )
 }
@@ -127,4 +176,4 @@ function Timer({ count }) {
 
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<ApolloProvider client={ client }><App /></ApolloProvider>, document.getElementById('root'))
