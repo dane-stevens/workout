@@ -49,17 +49,6 @@ function timer(count) {
 
 
 const typeDefs = gql`
-  type Query {
-    hello: String
-    allAuthors: [Author!]
-    author(id: Int!): Author
-    authorByName(name: String!): Author
-  }
-  type Author {
-    id: ID!
-    name: String!
-    married: Boolean!
-  }
 
   type Mutation {
     logTime(payload: LogPayload!): String
@@ -67,32 +56,16 @@ const typeDefs = gql`
   input LogPayload {
     name: String
     time: Int
+    arms: String
+    conditioning: String
+    legs: String
+    abs: String
+    strength: String
   }
 
 `
 
-const authors = [
-  { id: 1, name: 'Terry Pratchett', married: false },
-  { id: 2, name: 'Stephen King', married: true },
-  { id: 3, name: 'JK Rowling', married: false }
-]
-
 const resolvers = {
-  Query: {
-    hello: (root, args, context) => {
-      return 'Hello, world!'
-    },
-    allAuthors: (root, args, context) => {
-      return authors
-    },
-    author: (root, args, context) => {
-      return authors.find(author => author.id === args.id) || {}
-    },
-    authorByName: (root, args, context) => {
-      console.log('hihhihi', args.name)
-      return authors.find(x => x.name === args.name) || 'NOTFOUND'
-    }
-  },
 
   Mutation: {
 
@@ -132,7 +105,12 @@ const resolvers = {
                 [
                   payload.name,
                   new Date().toISOString(),
-                  timer(payload.time)
+                  timer(payload.time),
+                  payload.arms,
+                  payload.conditioning,
+                  payload.legs,
+                  payload.abs,
+                  payload.strength
                 ]
               ],
             },

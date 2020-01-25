@@ -95,7 +95,12 @@ function Workout({ name }) {
             variables: {
                 payload: {
                     name: name,
-                    time: timer
+                    time: timer,
+                    arms: exercises[0],
+                    conditioning: exercises[1],
+                    legs: exercises[2],
+                    abs: exercises[3],
+                    strength: exercises[4]
                 }
             }
         })
