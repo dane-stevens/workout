@@ -2,7 +2,12 @@ require('dotenv').config()
 const { ApolloServer, gql } = require('apollo-server-lambda')
 const { google } = require('googleapis')
 
- function timer(count) {
+const { CLIENT_EMAIL, PRIVATE_KEY } = process.env
+
+const privateKeyBuffer = Buffer.from(PRIVATE_KEY, 'base64')
+const privateKey = privateKeyBuffer.toString('utf-8')
+
+function timer(count) {
 
   const [ minutes, decimalSeconds ] = (count / 60).toString().split('.')
   
@@ -95,12 +100,10 @@ const resolvers = {
 
     logTime:(root, { payload }) => {
 
-      const { CLIENT_EMAIL, PRIVATE_KEY } = process.env
-
       const jwtClient = new google.auth.JWT(
         CLIENT_EMAIL,
         null,
-        PRIVATE_KEY,
+        privateKey,
         [
           'https://www.googleapis.com/auth/spreadsheets',
           'https://www.googleapis.com/auth/drive',
