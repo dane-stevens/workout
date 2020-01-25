@@ -50,6 +50,10 @@ function timer(count) {
 
 const typeDefs = gql`
 
+  type Query {
+    hello: String
+  }
+
   type Mutation {
     logTime(payload: LogPayload!): String
   }
@@ -66,6 +70,10 @@ const typeDefs = gql`
 `
 
 const resolvers = {
+
+  Query: {
+    hello: () => 'world'
+  },
 
   Mutation: {
 
