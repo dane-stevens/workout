@@ -16,7 +16,11 @@ const client = new ApolloClient({
         );
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
-    ...process.env.NODE_ENV === 'production' ? [createPersistedQueryLink({ useGETForHashedQueries: true })] : [],
+    // ...process.env.NODE_ENV === 'production' ? [createPersistedQueryLink({ useGETForHashedQueries: true })] : [],
+    // createPersistedQueryLink({
+    //   useGETForHashedQueries: true,
+    //   generateHash: (doc) => console.log(doc)
+    // }),
     new HttpLink({
       uri: '/.netlify/functions/apollo-graphql',
       credentials: 'same-origin'

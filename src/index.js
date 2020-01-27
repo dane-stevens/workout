@@ -128,11 +128,9 @@ function Workout({ config }) {
 
     const { loading, error, data } = useQuery(GET_WORKOUT, {
         variables: {
-            filter: {
-                date: new Date().toISOString().substr(0, 10),
-                difficulty: config.difficulty,
-                equipment: config.equipment
-            }
+            date: new Date().toISOString().substr(0, 10),
+            difficulty: config.difficulty,
+            equipment: config.equipment
         }
     })
 

@@ -29,7 +29,11 @@ const typeDefs = gql`
 
   type Query {
 
-    workout(filter: WorkoutFilter!): Workout
+    workout(
+      date: String!
+      difficulty: Int!
+      equipment: [String]
+    ): Workout
 
   }
 
@@ -86,7 +90,7 @@ const resolvers = {
 
   Query: {
 
-    workout: async (root, { filter }, { db }, info) => {
+    workout: async (root, filter, { db }, info) => {
 
       info.cacheControl.setCacheHint({ maxAge: 216000, scope: 'PUBLIC' })
 
