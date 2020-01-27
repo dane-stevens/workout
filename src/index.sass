@@ -1,4 +1,5 @@
 @import 'theme'
+@import 'material-icons/iconfont/material-icons.scss'
   
 html
   font-size: 62.5%
@@ -10,10 +11,7 @@ body
   height: 100%
   overflow: hidden
   margin: 0
-
-body
-  background-color: $bg-color
-  color: $text
+  padding: 0
 
 #root
   height: 100%
@@ -22,6 +20,19 @@ body
   position: relative
   height: 100%
   max-width: 100%
+  padding: 1rem
+
+.container.theme--blue
+  background: $blue-background
+  color: $blue-text
+
+.container.theme--purple
+  background: $purple-background
+  color: $purple-text
+
+.container.theme--green
+  background: $green-background
+  color: $green-text
 
 .workoutWrapper
   position: absolute
@@ -33,7 +44,25 @@ body
 
 h1
   font-size: 5rem
-  color: $dark-text
+  color: $default-text-dark
+
+.theme--blue h1
+  color: $blue-text-dark
+.theme--purple h1
+  color: $purple-text-dark
+.theme--green h1
+  color: $green-text-dark
+
+h2
+  font-weight: normal
+  color: $default-text-dark
+
+.theme--blue h2
+  color: $blue-text-dark
+.theme--purple h2
+  color: $purple-text-dark
+.theme--green h2
+  color: $green-text-dark
 
 ul
   list-style: none
@@ -49,20 +78,27 @@ ul
 .start
   margin: 6rem 1rem 0 1rem
   background: none
-  border: 1px solid $dark-text
+  border: 1px solid #ccc
   border-radius: 5px
-  color: $dark-text
+  color: $default-text-dark
   padding: 1rem 2rem
   cursor: pointer
   outline: none
   appearance: none
+
+.theme--blue .start
+  border-color: $blue-text-dark
+.theme--purple .start
+  border-color: $purple-text-dark
+.theme--green .start
+  border-color: $green-text-dark
 
 .start:hover
   background: rgba(255,255,255,0.1)
 
 .progress
   font-size: 6rem
-  color: $dark-text
+  color: $default-text-dark
 
 .exercise
   font-size: 7rem
@@ -94,7 +130,149 @@ ul
 
 .timer
   font-size: 4rem
-  color: $dark-text
+  color: $default-text-dark
+
+label
+  display: block
+
+input
+  border-radius: 5px
+  border: 1px solid $default-text-dark
+  display: block
+  width: 100%
+  text-indent: 1rem
+  padding: 1rem 0
+  margin-bottom: 1rem
+  background: none
+  color: $default-text
+  outline: none
+
+.theme--blue input:focus
+  border-color: $blue-text-dark
+.theme--purple input:focus
+  border-color: $purple-text-dark
+.theme--green input:focus
+  border-color: $green-text-dark
+
+button[type="submit"]
+  background: none
+  border: 1px solid $default-text-dark
+  border-radius: 5px
+  color: $default-text-dark
+  padding: 1rem 2rem
+  cursor: pointer
+  outline: none
+  appearance: none
+  display: block
+  margin-top: 2rem
+
+.theme--blue button[type="submit"]
+  border-color: $blue-text-dark
+  color: $blue-text-dark
+.theme--purple button[type="submit"]
+  border-color: $purple-text-dark
+  color: $purple-text-dark
+.theme--green button[type="submit"]
+  border-color: $green-text-dark
+  color: $green-text-dark
+
+.difficultyButton
+  outline: none
+  appearance: none
+  background: none
+  border: 1px solid $default-text-dark
+  border-radius: 5px
+  padding: 1rem
+  color: $default-text-dark
+
+.theme--blue .difficultyButton--selected
+  color: #fff
+  border-color: $blue-text-dark
+  background-color: $blue-text-dark
+.theme--purple .difficultyButton--selected
+  color: #fff
+  border-color: $purple-text-dark
+  background-color: $purple-text-dark
+.theme--green .difficultyButton--selected
+  color: #fff
+  border-color: $green-text-dark
+  background-color: $green-text-dark
+
+.equipmentButton
+  width: 100%
+  outline: none
+  appearance: none
+  background: none
+  border: 1px solid $default-text-dark
+  border-radius: 5px
+  padding: 1rem
+  color: $default-text-dark
+  line-height: 24px
+  position: relative
+
+.equipmentButton i
+  vertical-align: bottom
+  position: absolute
+  left: 1rem
+
+
+.theme--blue .equipmentButton--selected
+  color: $blue-text-dark
+  border-color: $blue-text-dark
+.theme--purple .equipmentButton--selected
+  color: $purple-text-dark
+  border-color: $purple-text-dark
+.theme--green .equipmentButton--selected
+  color: $green-text-dark
+  border-color: $green-text-dark
+
+.themeButton
+  width: 4rem
+  height: 4rem
+  outline: none
+  appearance: none
+  background: none
+  border: none
+  margin-right: 1rem
+  border-radius: 5px
+
+.themeButton--blue
+  background: #0e83ff
+  border: 5px solid #0e83ff
+
+.themeButton--purple
+  background: #FF58DA
+  border: 5px solid #FF58DA
+
+.themeButton--green
+  background: #00CE3A
+  border: 5px solid #00CE3A
+
+.themeButton--blue.themeButton--selected
+  border: 5px solid lighten(#0e83ff, 30)
+
+.themeButton--purple.themeButton--selected
+  border: 5px solid lighten(#FF58DA, 30)
+
+.themeButton--green.themeButton--selected
+  border: 5px solid lighten(#00CE3A, 30)
+
+.preferences
+  border: none
+  outline: none
+  appearance: none
+  background: none
+  color: $default-text
+  position: absolute
+  top: 1rem
+  right: 1rem
+
+.theme--blue .preferences
+  color: $blue-text
+.theme--purple .preferences
+  color: $purple-text
+.theme--green .preferences
+  color: $purple-text
 
 @media screen and (min-width: 48em)
   html

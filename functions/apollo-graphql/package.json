@@ -18,6 +18,8 @@
     "apollo-server-lambda": "^2.9.16",
     "dotenv": "^8.2.0",
     "googleapis": "^47.0.0",
-    "graphql": "^14.5.8"
+    "graphql": "^14.5.8",
+    "md5": "^2.2.1",
+    "mysql2": "^2.1.0"
   }
 }

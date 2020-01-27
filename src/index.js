@@ -2,71 +2,141 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { useInterval } from './hooks/interval'
 import { AutoFontSize } from 'auto-fontsize'
-import { ApolloProvider, useMutation } from '@apollo/react-hooks'
+import { ApolloProvider, useMutation, useQuery } from '@apollo/react-hooks'
 import client from './Apollo'
+import moment from 'moment'
 
 import './index.sass'
 
-import { reps } from './exerciseConfig'
-import { LOG_TIME } from './operations/time'
-// import { cards, exerciseList, reps } from './katieExerciseConfig'
-// import { cards, exerciseList, reps } from './pushupConfig'
-
-import config from './config.json'
-
-const { cards, exercises } = config
-
-// Count total reps per exercise
-const counts = {}
-cards.map(([k, card]) => {
-    return counts[k] = counts[k] ? counts[k] + reps[card] : reps[card]
-})
+import { GET_WORKOUT, COMPLETE_WORKOUT } from './operations/workout'
 
 function App() {
 
     const [ loading, setLoading ] = useState(true)
-    const [ input, setInput ] = useState('')
+    const [ preferences, setPreferences ] = useState(true)
     const [ name, setName ] = useState('')
+    const [ theme, setTheme ] = useState('blue')
+    const [ difficulty, setDifficulty ] = useState(1)
+    const [ equipment, setEquipment ] = useState({
+        'pullup-bar': false,
+        'dumbells': false,
+        'barbell': false,
+        'kettlebells': false
+    })
 
     useEffect(() => {
 
-        const name = localStorage.getItem('name') || null
-        setName(name)
+        const config = JSON.parse(localStorage.getItem('config') || null)
+
+        if (config && config.theme) setTheme(config.theme)
+        if (config && config.difficulty) setDifficulty(config.difficulty)
+        if (config && config.equipment) setEquipment(config.equipment)
+        if (config && config.name) {
+            setName(config.name)
+            setPreferences(false)
+        }
+
         setLoading(false)
 
     },[])
 
     function submit() {
-        setName(input)
-        localStorage.setItem('name', input)
+
+        if (!name) return
+
+        const config = {
+            name,
+            theme,
+            difficulty,
+            equipment
+        }
+
+        localStorage.setItem('config', JSON.stringify(config))
+
+        setPreferences(false)
     }
 
     if (loading) return null
 
-    if (!name) return (
-        <form
-            onSubmit={(e) => {
-                e.preventDefault()
-                submit()
-            }}
-        >
-            <label htmlFor='f_name'>Your Name</label>
-            <input type='text' name='name' id='f_name' value={ input } onChange={ (e) => setInput(e.target.value) } />
-            <button type='submit'>Continue</button>
-        </form>
-    )
+    const hasEquipment = []
+    Object.keys(equipment).map(key => equipment[key] && hasEquipment.push(key))
 
-    return <Workout name={ name } />
+    return <div className={`container theme--${ theme }`}>
+        {
+            preferences ? (
+                <form
+                    style={{
+                        maxWidth: '480px',
+                        margin: '0 auto',
+                    }}
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        submit()
+                    }}
+                >
+                    <h2>First and Last Name</h2>
+                    <input type='text' name='name' id='f_name' value={ name } onChange={ (e) => setName(e.target.value) } />
+
+                    <h2>Difficulty</h2>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gridGap: '1rem'
+                    }}>
+                        <button type='button' className={`difficultyButton ${ difficulty === 1 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(1) }>Easy</button>
+                        <button type='button' className={`difficultyButton ${ difficulty === 2 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(2) }>Medium</button>
+                        <button type='button' className={`difficultyButton ${ difficulty === 3 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(3) }>Hard</button>
+                        <button type='button' className={`difficultyButton ${ difficulty === 4 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(4) }>Heroic</button>
+                        <button type='button' className={`difficultyButton ${ difficulty === 5 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(5) }>Legendary</button>
+                    </div>                    
+
+                    <h2>Equipment</h2>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr',
+                        gridGap: '1rem'
+                    }}>
+                        <button type='button' className={`equipmentButton ${ equipment["pullup-bar"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, 'pullup-bar': !equipment['pullup-bar']}) }>Pullup Bar<i className={`material-icons`}>{ equipment["pullup-bar"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                        <button type='button' className={`equipmentButton ${ equipment["dumbells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, dumbells: !equipment['dumbells']}) }>Dumbells<i className={`material-icons`}>{ equipment["dumbells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                        <button type='button' className={`equipmentButton ${ equipment["barbell"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, barbell: !equipment['barbell']}) }>Barbell<i className={`material-icons`}>{ equipment["barbell"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                        <button type='button' className={`equipmentButton ${ equipment["kettlebells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, kettlebells: !equipment['kettlebells']}) }>Kettlebells<i className={`material-icons`}>{ equipment["kettlebells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                    </div>
+
+                    <h2>Color Theme</h2>
+                    <button type='button' className={`themeButton themeButton--blue ${ theme === 'blue' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('blue') }/>
+                    <button type='button' className={`themeButton themeButton--purple ${ theme === 'purple' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('purple') }/>
+                    <button type='button' className={`themeButton themeButton--green ${ theme === 'green' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('green') }/>
+                    
+                    <button type='submit'>Save Preferences</button>
+                </form>
+            ) : (
+                <>
+                    <button type='button' className='preferences' onClick={ () => setPreferences(true) }><i className='material-icons'>settings_applications</i></button>
+                    <Workout config={{ name, difficulty, equipment: hasEquipment }} />
+                </>
+            )
+        }
+    </div>
 
 }
 
-function Workout({ name }) {
+function Workout({ config }) {
 
     const [ state, setState ] = useState('BEGIN')
     const [ current, setCurrent ] = useState(0)
     const [ timer, setTimer ] = useState(0)
 
-    const [ logTime ] = useMutation(LOG_TIME)
+    const { loading, error, data } = useQuery(GET_WORKOUT, {
+        variables: {
+            filter: {
+                date: new Date().toISOString().substr(0, 10),
+                difficulty: config.difficulty,
+                equipment: config.equipment
+            }
+        }
+    })
+
+    const [ completeWorkout ] = useMutation(COMPLETE_WORKOUT)
 
     useInterval(() => {
         if (state === 'WORKOUT') {
@@ -81,7 +151,7 @@ function Workout({ name }) {
 
     function handleKeyPress(e) {
         if (e.code === 'Space') {
-            if (current < (cards.length - 1)) {
+            if (current < (sets.length - 1)) {
                 setCurrent(current + 1)
             } else {
                 setState('COMPLETE')
@@ -89,78 +159,77 @@ function Workout({ name }) {
         }
     }
 
+    if (loading) return 'Loading...'
+    if (error) return 'Error loading workout'
+
+    const { workout } = data
+    const { sets, exercises } = workout
+
     function completeTimer() {
         setState('COMPLETE')
-        logTime({
+
+        completeWorkout({
             variables: {
                 payload: {
-                    name: name,
-                    time: timer,
-                    arms: exercises['D'],
-                    conditioning: exercises['H'],
-                    legs: exercises['C'],
-                    abs: exercises['S'],
-                    strength: exercises['Joker']
+                    name: config.name,
+                    duration: timer,
+                    workoutHash: workout.hash
                 }
             }
         })
     }
 
-    const currentElement = cards[current]
-
+    const currentSet = sets[current]
 
     if (state === 'COMPLETE') return (
-        <div className='container'>
-            <div className='workoutWrapper'>
-                <h1>Complete!</h1>
-                <ul style={{ marginBottom: '6rem' }}>
-                    {
-                        Object.keys(exercises).map(key => <li key={ key }>{ exercises[key] }: { counts[key] }</li>)
-                    }
-                </ul>
-                <Timer count={ timer } />
+        <div className='workoutWrapper'>
+            <h1>Complete!</h1>
+            <ul style={{ marginBottom: '6rem' }}>
+                {
+                    exercises.map(exercise => <li key={ exercise.slug }>{ exercise.name }: { sets.filter(set => set.exercise === exercise.slug).reduce((count, set) => count + set.count, 0) }</li>)
+                }
+            </ul>
+            <Timer count={ timer } />
 
-                <button type='button' className='start' onClick={ () => window.location.reload() }>Reset</button>
-            </div>
+            <button type='button' className='start' onClick={ () => window.location.reload() }>Reset</button>
         </div>
     )
 
     if (state === 'BEGIN') return (
-        <div className='container'>
-            <div className='workoutWrapper'>
-                <h1>Today's Workout</h1>
-                <ul>
-                    {
-                        Object.keys(exercises).map(key => <li key={ key }>{ exercises[key] }: { counts[key] }</li>)
-                    }
-                </ul>
+        <div className='workoutWrapper'>
+            <h1>Today's Workout</h1>
+            <h2>{ moment().format('dddd, MMM YY') }</h2>
+            <ul>
+                {
+                    exercises.map(exercise => <li key={ exercise.slug }>{ exercise.name }: { sets.filter(set => set.exercise === exercise.slug).reduce((count, set) => count + set.count, 0) }</li>)
+                }
+            </ul>
 
-                <button type='button' className='start' onClick={ () => setState('WORKOUT') }>Start</button>
-                <button type='button' className='start' onClick={ () => window.location.reload() }>Reset</button>
-            </div>
+            <button type='button' className='start' onClick={ () => setState('WORKOUT') }>Start</button>
+            <button type='button' className='start' onClick={ () => window.location.reload() }>Reset</button>
         </div>
     )
 
     return (
-        <div className='container' key={current}>
+        <React.Fragment key={current}>
             <div className='workoutWrapper'>
-                <div className='progress'>{ current + 1 }/{ cards.length }</div>
+                <div className='progress'>{ current + 1 }/{ sets.length }</div>
                 <div className='exercise'>
                     <AutoFontSize
                         className='exerciseText'
-                        text={ exercises[currentElement[0]] }
+                        text={ exercises.find((exercise) => currentSet.exercise === exercise.slug).name }
                         minTextSize={40}
                         textSize={70}
                         textStepSize={1}
                         targetLines={2}
                     />
                 </div>
-                <div className='reps'>{ reps[currentElement[1]] }</div>
+                <div className='reps'>{ currentSet.count }</div>
 
                 <Timer count={ timer } />
             </div>
-            <button className='nextButton' type='button' onClick={() => current < (cards.length - 1) ? setCurrent(current + 1) : completeTimer() }/>
-        </div>
+            <button className='nextButton' type='button' onClick={() => current < (sets.length - 1) ? setCurrent(current + 1) : completeTimer() }/>
+        </React.Fragment>
     )
 }
 
