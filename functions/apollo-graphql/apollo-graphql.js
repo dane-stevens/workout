@@ -175,7 +175,7 @@ const resolvers = {
 
       const today = new Date().toISOString().substr(0, 10)
 
-      db.execute(`INSERT INTO workout (hash, date, difficulty, config) VALUES (?, ?, ?, ?)`, [ workoutHash, today, filter.difficulty, JSON.stringify(config) ])
+      await db.execute(`INSERT INTO workout (hash, date, difficulty, config) VALUES (?, ?, ?, ?)`, [ workoutHash, today, filter.difficulty, JSON.stringify(config) ])
 
       return {
         hash: workoutHash,
@@ -190,7 +190,7 @@ const resolvers = {
 
     completeWorkout: async (root, { payload }, { db }) => {
 
-      db.execute(`INSERT INTO results (workoutHash, name, duration) VALUES (?, ?, ?)`, [ payload.workoutHash, payload.name, payload.duration ])
+      await db.execute(`INSERT INTO results (workoutHash, name, duration) VALUES (?, ?, ?)`, [ payload.workoutHash, payload.name, payload.duration ])
 
       return 'SUCCESS'
 
