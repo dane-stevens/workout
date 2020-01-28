@@ -5,10 +5,14 @@ import { AutoFontSize } from 'auto-fontsize'
 import { ApolloProvider, useMutation, useQuery } from '@apollo/react-hooks'
 import client from './Apollo'
 import moment from 'moment'
+import ReactGA from 'react-ga'
 
 import './index.sass'
 
 import { GET_WORKOUT, COMPLETE_WORKOUT } from './operations/workout'
+
+ReactGA.initialize('UA-157156515-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 function App() {
 

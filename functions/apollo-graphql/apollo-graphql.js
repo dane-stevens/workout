@@ -7,9 +7,6 @@ const db = require('./db.js')
 const { CLIENT_EMAIL, PRIVATE_KEY } = process.env
 const privateKey = PRIVATE_KEY.replace(/\\n/g, '\n')
 
-
-
-
 function timer(count) {
 
   const [ minutes, decimalSeconds ] = (count / 60).toString().split('.')
