@@ -178,6 +178,7 @@ function Workout({ config }) {
     }
 
     const currentSet = sets[current]
+    const currentExercise = exercises.find((exercise) => currentSet.exercise === exercise.slug)
 
     if (state === 'COMPLETE') return (
         <div className='workoutWrapper'>
@@ -215,7 +216,7 @@ function Workout({ config }) {
                 <div className='exercise'>
                     <AutoFontSize
                         className='exerciseText'
-                        text={ exercises.find((exercise) => currentSet.exercise === exercise.slug).name }
+                        text={ currentExercise.name }
                         minTextSize={40}
                         textSize={70}
                         textStepSize={1}
@@ -223,7 +224,7 @@ function Workout({ config }) {
                     />
                 </div>
                 <div className='reps'>{ currentSet.count }</div>
-                <div className='leftAndRight'>{ exercises.find((exercise) => currentSet.exercise === exercise.slug).alternating ? 'L&R':'' }</div>
+                <div className='leftAndRight'>{ currentExercise.alternating && currentExercise.doubleCount ? 'L&R':'' }</div>
 
                 <Timer count={ timer } />
             </div>
