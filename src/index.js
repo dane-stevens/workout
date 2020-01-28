@@ -223,6 +223,7 @@ function Workout({ config }) {
                     />
                 </div>
                 <div className='reps'>{ currentSet.count }</div>
+                <div className='leftAndRight'>{ exercises.find((exercise) => currentSet.exercise === exercise.slug).alternating ? 'L&R':'' }</div>
 
                 <Timer count={ timer } />
             </div>
