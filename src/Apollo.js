@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import { createPersistedQueryLink } from "apollo-link-persisted-queries";
+// import { createPersistedQueryLink } from "apollo-link-persisted-queries";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';

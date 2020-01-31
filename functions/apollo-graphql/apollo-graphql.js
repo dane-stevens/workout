@@ -107,14 +107,15 @@ const resolvers = {
       }
       
       // Generate the workout
-      const equipmentString = filter.equipment.reduce((str, equipment) => (str + (str.length ? ",'" : "'") + equipment + "'"), 'none')
+      // const equipmentString = filter.equipment.reduce((str, equipment) => (str + (str.length ? ",'" : "'") + equipment + "'"), "'none'")
+      const equipmentString = filter.equipment.reduce((str, equipment) => (str + (str.length ? `,'${ equipment }'` : `'${ equipment }'`)), "'none'")
 
       const [ [arms], [conditioning], [legs], [abs], [strength] ] = await Promise.all([
-        db.execute(`SELECT * FROM exercises WHERE category = 'arms' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (?) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty, equipmentString ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'conditioning' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (?) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty, equipmentString ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'legs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (?) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty, equipmentString ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'abs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (?) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty, equipmentString ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'strength' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (?) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty, equipmentString ]),
+        db.execute(`SELECT * FROM exercises WHERE category = 'arms' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+        db.execute(`SELECT * FROM exercises WHERE category = 'conditioning' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+        db.execute(`SELECT * FROM exercises WHERE category = 'legs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+        db.execute(`SELECT * FROM exercises WHERE category = 'abs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+        db.execute(`SELECT * FROM exercises WHERE category = 'strength' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
       ])
 
       const exercises = {
@@ -124,7 +125,7 @@ const resolvers = {
         abs,
         strength
       }
-      
+
       // Set reps by difficulty
       const reps = {
         1: [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
