@@ -128,11 +128,30 @@ const resolvers = {
 
       // Set reps by difficulty
       const reps = {
-        1: [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
-        2: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10 ],
-        3: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ],
-        4: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30 ],
-        5: [ 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 30, 30 ],
+        1: [ 
+          [2, 3, 4, 5, 6, 7, 8, 9, 10],
+          [10, 10, 10, 10, 10],
+          [15, 15, 20]
+          [20, 20, 10]
+        ],
+        2: [ 
+          [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10],
+          [10, 10, 10, 10, 10, 10, 10],
+          [15, 15, 15, 15, 15]
+          [20, 20, 20]
+        ],
+        3: [ 
+          [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+          [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+          [15, 15, 15, 15, 15, 15, 15],
+          [20, 20, 20, 20, 20]
+        ],
+        4: [ 
+          [2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30]
+        ],
+        5: [ 
+          [10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 30, 30]
+        ],
       }
 
       // Set categories by difficulty
@@ -140,10 +159,11 @@ const resolvers = {
 
       // Set builder
       const rawSets = []
-      categories.map((category) => reps[filter.difficulty].map(rep => rawSets.push({ category, exercise: exercises[category][0].slug, count: rep })))
+      const repConfig = reps[filter.difficulty][Math.floor(Math.random() * reps[filter.difficulty].length)]
+      categories.map((category) => repConfig.map(rep => rawSets.push({ category, exercise: exercises[category][0].slug, count: rep })))
 
       // Push strength sets if greater than easy
-      if (filter.difficulty > 2) {
+      if (filter.difficulty > 1) {
 
         const strengthReps = {
           2: 10,
