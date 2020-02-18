@@ -204,7 +204,7 @@ function Workout({ config }) {
         <div className='workoutWrapper'>
             <h1>Today's Workout</h1>
             <h2>{ moment().format('lll') }</h2>
-    <h2>{ date }</h2>
+    <h2>{ moment().unix() }</h2>
             <ul>
                 {
                     exercises.map(exercise => <li key={ exercise.slug }>{ exercise.name }: { sets.filter(set => set.exercise === exercise.slug).reduce((count, set) => count + set.count, 0) }</li>)
