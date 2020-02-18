@@ -14,8 +14,6 @@ import { GET_WORKOUT, COMPLETE_WORKOUT } from './operations/workout'
 ReactGA.initialize('UA-157156515-1');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-const date = new Date().toISOString()
-
 function App() {
 
     const [ loading, setLoading ] = useState(true)
@@ -134,7 +132,7 @@ function Workout({ config }) {
 
     const { loading, error, data } = useQuery(GET_WORKOUT, {
         variables: {
-            date: date.substr(0, 10),
+            date: moment().format('YYYY-MM-DD'),
             difficulty: config.difficulty,
             equipment: config.equipment
         }
@@ -203,8 +201,7 @@ function Workout({ config }) {
     if (state === 'BEGIN') return (
         <div className='workoutWrapper'>
             <h1>Today's Workout</h1>
-            <h2>{ moment().format('lll') }</h2>
-    <h2>{ moment().unix() }</h2>
+            <h2>{ moment().format('dddd, MMM Do') }</h2>
             <ul>
                 {
                     exercises.map(exercise => <li key={ exercise.slug }>{ exercise.name }: { sets.filter(set => set.exercise === exercise.slug).reduce((count, set) => count + set.count, 0) }</li>)
