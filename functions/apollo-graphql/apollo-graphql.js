@@ -166,7 +166,7 @@ const resolvers = {
       if (filter.difficulty > 2) {
 
         const strengthReps = {
-          // 2: 10,
+          2: 10,
           3: 20,
           4: 30,
           5: 40
