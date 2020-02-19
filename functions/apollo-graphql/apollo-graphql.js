@@ -94,30 +94,105 @@ const resolvers = {
       const workoutHash = md5(filter.date + ',' + filter.difficulty.toString() + ',' + filter.equipment.reduce((str, equipment) => str + ',' + equipment, ''))
 
       // Find if workout exists
-      const [ rows ] = await db.execute(`SELECT * FROM workout WHERE hash = ?`, [ workoutHash ])
+      // const [ rows ] = await db.execute(`SELECT * FROM workout WHERE hash = ?`, [ workoutHash ])
 
-      if (rows.length > 0) {
+      // if (rows.length > 0) {
 
-        // return the workout
-        return {
-            hash: rows[0].hash,
-            ...(JSON.parse(rows[0].config))
-        }
+      //   // return the workout
+      //   return {
+      //       hash: rows[0].hash,
+      //       ...(JSON.parse(rows[0].config))
+      //   }
 
-      }
+      // }
       
       // Generate the workout
       // const equipmentString = filter.equipment.reduce((str, equipment) => (str + (str.length ? ",'" : "'") + equipment + "'"), "'none'")
       const equipmentString = filter.equipment.reduce((str, equipment) => (str + (str.length ? `,'${ equipment }'` : `'${ equipment }'`)), "'none'")
 
-      const [ [arms], [conditioning], [legs], [abs], [strength] ] = await Promise.all([
-        db.execute(`SELECT * FROM exercises WHERE category = 'arms' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'conditioning' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'legs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'abs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
-        db.execute(`SELECT * FROM exercises WHERE category = 'strength' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
-      ])
+      // const [ [arms], [conditioning], [legs], [abs], [strength] ] = await Promise.all([
+      //   db.execute(`SELECT * FROM exercises WHERE category = 'arms' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+      //   db.execute(`SELECT * FROM exercises WHERE category = 'conditioning' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+      //   db.execute(`SELECT * FROM exercises WHERE category = 'legs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+      //   db.execute(`SELECT * FROM exercises WHERE category = 'abs' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+      //   db.execute(`SELECT * FROM exercises WHERE category = 'strength' AND minDifficulty <= ? AND maxDifficulty >= ? AND (equipment IN (${ equipmentString }) OR equipment IS NULL) ORDER BY RAND() LIMIT 1`, [ filter.difficulty, filter.difficulty ]),
+      // ])
 
+      
+      const armsConfig = {
+        1: [{
+          slug: 'arms',
+          name: 'Dumbell Curls'
+        }],
+        2: [{
+          slug: 'arms',
+          name: 'Dumbell Curls'
+        }],
+        3: [{
+          slug: 'arms',
+          name: 'Jack Pushups',
+        }]
+      }
+      const conditioningConfig = {
+        1: [{
+          slug: 'conditioning',
+          name: 'Dumbell Squat and Press'
+        }],
+        2: [{
+          slug: 'conditioning',
+          name: 'Dumbell Squat and Press'
+        }],
+        3: [{
+          slug: 'conditioning',
+          name: 'Prisoner Skater Jumps'
+        }]
+      } 
+      const legsConfig = {
+        1: [{
+          slug: 'legs',
+          name: 'Reverse Prisoner Lunges'
+        }],
+        2: [{
+          slug: 'legs',
+          name: 'Reverse Prisoner Lunges'
+        }],
+        3: [{
+        slug: 'legs',
+        name: 'Bulgarian Split Squats',
+        alternating: true,
+        doubleCount: true
+      }]
+    }
+      const absConfig = {
+        1: [{
+          slug: 'abs',
+          name: 'Long-leg Plank Marches'
+        }],
+        2: [{
+          slug: 'abs',
+          name: 'Long-leg Plank Marches'
+        }],
+        3:[{
+          slug: 'abs',
+          name: 'Dragon Flags'
+        }]
+      } 
+      
+      const strengthConfig = {
+        1: [],
+        2: [],
+        3:[{
+          slug: 'strength',
+          name: 'Handstand Pushups'
+        }]
+      }
+
+      const arms = armsConfig[filter.difficulty]
+      const conditioning = conditioningConfig[filter.difficulty]
+      const legs = legsConfig[filter.difficulty]
+      const abs = absConfig[filter.difficulty]
+      const strength = strengthConfig[filter.difficulty]
+      
       const exercises = {
         arms,
         conditioning,
@@ -125,7 +200,6 @@ const resolvers = {
         abs,
         strength
       }
-
       // Set reps by difficulty
       const reps = {
         1: [ 
@@ -162,7 +236,8 @@ const resolvers = {
 
       // Set builder
       const rawSets = []
-      const repConfig = reps[filter.difficulty][Math.floor(Math.random() * reps[filter.difficulty].length)]
+      // const repConfig = reps[filter.difficulty]1[Math.floor(Math.random() * reps[filter.difficulty].length)]
+      const repConfig = reps[filter.difficulty][2]
       categories.map((category) => repConfig.map(rep => rawSets.push({ category, exercise: exercises[category][0].slug, count: rep })))
 
       // Push strength sets if greater than easy
@@ -196,7 +271,7 @@ const resolvers = {
 
       const today = new Date().toISOString().substr(0, 10)
 
-      await db.execute(`INSERT INTO workout (hash, date, difficulty, config) VALUES (?, ?, ?, ?)`, [ workoutHash, today, filter.difficulty, JSON.stringify(config) ])
+      // await db.execute(`INSERT INTO workout (hash, date, difficulty, config) VALUES (?, ?, ?, ?)`, [ workoutHash, today, filter.difficulty, JSON.stringify(config) ])
 
       return {
         hash: workoutHash,
