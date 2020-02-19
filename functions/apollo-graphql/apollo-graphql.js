@@ -236,8 +236,7 @@ const resolvers = {
 
       // Set builder
       const rawSets = []
-      // const repConfig = reps[filter.difficulty]1[Math.floor(Math.random() * reps[filter.difficulty].length)]
-      const repConfig = reps[filter.difficulty][2]
+      const repConfig = reps[filter.difficulty][Math.floor(Math.random() * reps[filter.difficulty].length)]
       categories.map((category) => repConfig.map(rep => rawSets.push({ category, exercise: exercises[category][0].slug, count: rep })))
 
       // Push strength sets if greater than easy
