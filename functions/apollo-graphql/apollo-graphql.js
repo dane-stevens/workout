@@ -284,10 +284,16 @@ const resolvers = {
   Mutation: {
 
     completeWorkout: async (root, { payload }, { db }) => {
+      try {
+        await db.execute(`INSERT INTO results (workoutHash, name, duration) VALUES (?, ?, ?)`, [ payload.workoutHash, payload.name, payload.duration ])
+        return 'SUCCESS'
+      }
 
-      await db.execute(`INSERT INTO results (workoutHash, name, duration) VALUES (?, ?, ?)`, [ payload.workoutHash, payload.name, payload.duration ])
+      catch(err) {
+        return 'ERROR'
+      }
 
-      return 'SUCCESS'
+      
 
     },
 
