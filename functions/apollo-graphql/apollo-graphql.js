@@ -122,7 +122,7 @@ const resolvers = {
       const armsConfig = {
         1: [{
           slug: 'arms',
-          name: 'Dumbell Curls'
+          name: 'Tricep Dips'
         }],
         2: [{
           slug: 'arms',
@@ -136,7 +136,7 @@ const resolvers = {
       const conditioningConfig = {
         1: [{
           slug: 'conditioning',
-          name: 'Dumbell Squat and Press'
+          name: 'Burpees'
         }],
         2: [{
           slug: 'conditioning',
@@ -150,23 +150,25 @@ const resolvers = {
       const legsConfig = {
         1: [{
           slug: 'legs',
-          name: 'Reverse Prisoner Lunges'
+          name: 'Sumo Squats'
         }],
         2: [{
           slug: 'legs',
           name: 'Reverse Prisoner Lunges'
         }],
         3: [{
-        slug: 'legs',
-        name: 'Bulgarian Split Squats',
-        alternating: true,
-        doubleCount: true
+          slug: 'legs',
+          name: 'Bulgarian Split Squats',
+          alternating: true,
+          doubleCount: true
       }]
     }
       const absConfig = {
         1: [{
           slug: 'abs',
-          name: 'Long-leg Plank Marches'
+          name: 'Bulgarian Split Squats',
+          alternating: true,
+          doubleCount: true
         }],
         2: [{
           slug: 'abs',
