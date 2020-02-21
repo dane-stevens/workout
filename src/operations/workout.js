@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 export const GET_WORKOUT = gql`
     query GetWorkout($date: String!, $difficulty: Int!, $equipment: [String]!) {
         workout(date: $date, difficulty: $difficulty, equipment: $equipment) {
-            hash
+            id
             sets {
                 category
                 exercise

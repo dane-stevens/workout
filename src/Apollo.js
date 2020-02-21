@@ -22,7 +22,9 @@ const client = new ApolloClient({
     //   generateHash: (doc) => console.log(doc)
     // }),
     new HttpLink({
-      uri: '/.netlify/functions/apollo-graphql',
+      // uri: '/.netlify/functions/apollo-graphql',
+      // uri: 'http://10.10.89.100:4001',
+      uri: process.env.NODE_ENV === 'production' ? 'https://api.teenranch.com/workout' : 'http://10.10.89.100:4001',
       credentials: 'same-origin'
     })
   ]),

@@ -175,7 +175,7 @@ function Workout({ config }) {
                 payload: {
                     name: config.name,
                     duration: timer,
-                    workoutHash: workout.hash
+                    workoutId: workout.id
                 }
             }
         })
