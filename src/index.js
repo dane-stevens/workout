@@ -117,7 +117,7 @@ function App() {
                     </form>
 
                     <br/>
-                    <a href="mailto:?subject=You%20need%20try%20this%20workout%20I%20just%20did!&body=Hey%2C%0D%0A%0D%0AYou%20need%20to%20try%20this%20workout%20I%20just%20did%21%0D%0A%0D%0Ahttps%3A%2F%2Fskyf4ll-workout.netlify.com">Share this App</a>
+                    <a href="sms:?body=You%20should%20try%20this%20workout%20I%20just%20did!%20https%3A%2F%2Fskyf4ll-workout.netlify.com">Share this App</a>
                 </div>
             ) : (
                 <>
