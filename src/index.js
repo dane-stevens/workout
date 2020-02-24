@@ -68,51 +68,57 @@ function App() {
     return <div className={`container theme--${ theme }`}>
         {
             preferences ? (
-                <form
+                <div
                     style={{
                         maxWidth: '480px',
                         margin: '0 auto',
                     }}
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        submit()
-                    }}
                 >
-                    <h2>First and Last Name</h2>
-                    <input type='text' name='name' id='f_name' value={ name } onChange={ (e) => setName(e.target.value) } />
+                    <form                        
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            submit()
+                        }}
+                    >
+                        <h2>First and Last Name</h2>
+                        <input type='text' name='name' id='f_name' value={ name } onChange={ (e) => setName(e.target.value) } />
 
-                    <h2>Difficulty</h2>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 1fr)',
-                        gridGap: '1rem'
-                    }}>
-                        <button type='button' className={`difficultyButton ${ difficulty === 1 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(1) }>Easy</button>
-                        <button type='button' className={`difficultyButton ${ difficulty === 2 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(2) }>Medium</button>
-                        <button type='button' className={`difficultyButton ${ difficulty === 3 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(3) }>Hard</button>
-                        <button type='button' className={`difficultyButton ${ difficulty === 4 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(4) }>Heroic</button>
-                        <button type='button' className={`difficultyButton ${ difficulty === 5 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(5) }>Legendary</button>
-                    </div>                    
+                        <h2>Difficulty</h2>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(5, 1fr)',
+                            gridGap: '1rem'
+                        }}>
+                            <button type='button' className={`difficultyButton ${ difficulty === 1 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(1) }>Easy</button>
+                            <button type='button' className={`difficultyButton ${ difficulty === 2 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(2) }>Medium</button>
+                            <button type='button' className={`difficultyButton ${ difficulty === 3 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(3) }>Hard</button>
+                            <button type='button' className={`difficultyButton ${ difficulty === 4 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(4) }>Heroic</button>
+                            <button type='button' className={`difficultyButton ${ difficulty === 5 ? 'difficultyButton--selected' : '' }`} onClick={ () => setDifficulty(5) }>Legendary</button>
+                        </div>                    
 
-                    <h2>Equipment</h2>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr',
-                        gridGap: '1rem'
-                    }}>
-                        <button type='button' className={`equipmentButton ${ equipment["pullup-bar"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, 'pullup-bar': !equipment['pullup-bar']}) }>Pullup Bar<i className={`material-icons`}>{ equipment["pullup-bar"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
-                        <button type='button' className={`equipmentButton ${ equipment["dumbells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, dumbells: !equipment['dumbells']}) }>Dumbells<i className={`material-icons`}>{ equipment["dumbells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
-                        <button type='button' className={`equipmentButton ${ equipment["barbell"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, barbell: !equipment['barbell']}) }>Barbell<i className={`material-icons`}>{ equipment["barbell"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
-                        <button type='button' className={`equipmentButton ${ equipment["kettlebells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, kettlebells: !equipment['kettlebells']}) }>Kettlebells<i className={`material-icons`}>{ equipment["kettlebells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
-                    </div>
+                        <h2>Equipment</h2>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr',
+                            gridGap: '1rem'
+                        }}>
+                            <button type='button' className={`equipmentButton ${ equipment["pullup-bar"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, 'pullup-bar': !equipment['pullup-bar']}) }>Pullup Bar<i className={`material-icons`}>{ equipment["pullup-bar"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                            <button type='button' className={`equipmentButton ${ equipment["dumbells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, dumbells: !equipment['dumbells']}) }>Dumbells<i className={`material-icons`}>{ equipment["dumbells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                            <button type='button' className={`equipmentButton ${ equipment["barbell"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, barbell: !equipment['barbell']}) }>Barbell<i className={`material-icons`}>{ equipment["barbell"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                            <button type='button' className={`equipmentButton ${ equipment["kettlebells"] ? 'equipmentButton--selected' : '' }`} onClick={ () => setEquipment({...equipment, kettlebells: !equipment['kettlebells']}) }>Kettlebells<i className={`material-icons`}>{ equipment["kettlebells"] ? 'check_box' : 'check_box_outline_blank' }</i></button>
+                        </div>
 
-                    <h2>Color Theme</h2>
-                    <button type='button' className={`themeButton themeButton--blue ${ theme === 'blue' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('blue') }/>
-                    <button type='button' className={`themeButton themeButton--purple ${ theme === 'purple' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('purple') }/>
-                    <button type='button' className={`themeButton themeButton--green ${ theme === 'green' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('green') }/>
-                    
-                    <button type='submit'>Save Preferences</button>
-                </form>
+                        <h2>Color Theme</h2>
+                        <button type='button' className={`themeButton themeButton--blue ${ theme === 'blue' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('blue') }/>
+                        <button type='button' className={`themeButton themeButton--purple ${ theme === 'purple' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('purple') }/>
+                        <button type='button' className={`themeButton themeButton--green ${ theme === 'green' ? 'themeButton--selected' : '' }`} onClick={ () => setTheme('green') }/>
+                        
+                        <button type='submit'>Save Preferences</button>
+                    </form>
+
+                    <br/>
+                    <a href="mailto:?subject=You%20need%20try%20this%20workout%20I%20just%20did!&body=Hey%2C%0D%0A%0D%0AYou%20need%20to%20try%20this%20workout%20I%20just%20did%21%0D%0A%0D%0Ahttps%3A%2F%2Fskyf4ll-workout.netlify.com">Share this App</a>
+                </div>
             ) : (
                 <>
                     <button type='button' className='preferences' onClick={ () => setPreferences(true) }><i className='material-icons'>settings_applications</i></button>
